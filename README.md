@@ -18,8 +18,30 @@
 
 [images]
 
+### 2. 데이터 수집
 
-    
+데이터 수집이 중요함 ~~~~
+
+### 3. 데이터 전처리
+
+데이터 전처리는 어떠한 용도로 ~~~
+
+### 4. 토픽 모델링 모델링
+
+토픽 모델링의 결과는 연구자의 주관적인 개입이 존재할 수 있는데 ~~~~
+
+### 5. 토픽 모델링 시각화 및 검증
+
+일관성 지수.... 등등에 해당하는 내용
+
+### 6. Topic에 대한 시계열 변화 추이 분석
+
+그래프에 해당하는 내용 작성
+
+
+
+
+
 ##### Source
     1) Topic modeling with Gensim(Python) DOI: https://www.machinelearningplus.com/nlp/topic-modeling-gensim-python/
     2) gensim website DOI: https://radimrehurek.com/gensim_3.8.3/models/wrappers/ldamallet.html
