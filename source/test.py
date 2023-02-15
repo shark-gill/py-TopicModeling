@@ -13,10 +13,10 @@ import nltk
 nltk.download('stopwords')
 
 ## Mallet
-import os 
-from gensim.models.wrappers import LdaMallet
+# import os 
+# from gensim.models.wrappers import LdaMallet
 
-os.environ['MALLET_HOME'] = '/home/lhshrk/py-TopicModeling/Mallet'
+# os.environ['MALLET_HOME'] = '/home/lhshrk/py-TopicModeling/Mallet'
 
 ## Gensim
 import gensim
@@ -52,6 +52,7 @@ rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/dataset.csv', encoding
 documents = pd.DataFrame(rawdata)
 documents.head()
 len(documents)
+
 # %%
 
 data = documents.keword.values.tolist()
@@ -126,6 +127,7 @@ nlp = spacy.load('en_core_web_md', disable=['parser', 'ner'])
 data_lemmatized = lemmatization(data_words_bigrams, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV'])
 
 print(data_lemmatized[:1])
+
 # %%
 # Create Dictionary
 id2word = corpora.Dictionary(data_lemmatized)
@@ -138,6 +140,7 @@ corpus = [id2word.doc2bow(text) for text in texts]
 
 # View
 print(corpus[:1])
+
 #%%
 # Build LDA model
 lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
@@ -172,20 +175,18 @@ vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
 vis
 
 #%%
-# import os
-# from gensim.models.wrappers import LDAMallet
-# os.environp[
-# Download URL: https://mallet.cs.umass.edu/download.php
-mallet_path = '/home/lhshrk/py-TopicModeling/Mallet/bin/mallet' # update this path
-ldamallet = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, num_topics=20, id2word=id2word)
 
-# Show Topics
-pprint(ldamallet.show_topics(formatted=False))
+# from gensim.models.coherencemodel import CoherenceModel
 
-# Compute Coherence Score
-coherence_model_ldamallet = CoherenceModel(model=ldamallet, texts=data_lemmatized, dictionary=id2word, coherence='c_v')
-coherence_ldamallet = coherence_model_ldamallet.get_coherence()
-print('\nCoherence Score: ', coherence_ldamallet)
+# min_topics, max_topics = 2, 10 ## (1) 3, 15 -> 12 /(2) 2, 10 -> 7
+# coherence_scores = []
+
+# for num_topics in range(min_topics, max_topics):
+#     model = lda_model(corpus, num_topics=num_topics, id2word=dictionary)
+#     coherence = CoherenceModel(model=model, texts=docs_texts, dictionary=dictionary)
+#     coherence_scores.append(coherence.get_coherence())
+    
+# coherence_scores
 # %%
 def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
     """
@@ -216,3 +217,6 @@ def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
 # Can take a long time to run.
 model_list, coherence_values = compute_coherence_values(dictionary=id2word, corpus=corpus, texts=data_lemmatized, start=2, limit=40, step=6)
 # %%
+
+# https://radimrehurek.com/gensim_3.8.3/models/wrappers/ldamallet.html
+# Code: https://www.machinelearningplus.com/nlp/topic-modeling-gensim-python/
