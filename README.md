@@ -74,6 +74,12 @@ LDA 토픽 모델링 분석은 연구자가 설정한 토픽 모델, 주제 수 
 <img src='images/tm_visualization.png'>
 
 -----
+### 05. LDA 토픽 모델링 시계열 추이 분석
+-----
+
+[추후 작업]
+
+-----
 ### 참고문헌(Source)
 
 > 1) Topic modeling with Gensim(Python) DOI: https://www.machinelearningplus.com/nlp/)topic-modeling-gensim-python/
