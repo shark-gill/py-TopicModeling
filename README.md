@@ -1,6 +1,7 @@
 # Python based Topic Modeling Pracice
 
-### Dependency
+## Dependency
+.
     Python 3.9.16
     pip 23.0
     setuptools 58.1.0
@@ -43,7 +44,7 @@
 
 
 ##### Source
-    1) Topic modeling with Gensim(Python) DOI: https://www.machinelearningplus.com/nlp/topic-modeling-gensim-python/
+    1) [Topic modeling with Gensim(Python)](https://www.machinelearningplus.com/nlp/)topic-modeling-gensim-python/
     2) gensim website DOI: https://radimrehurek.com/gensim_3.8.3/models/wrappers/ldamallet.html
 
     참고문헌 추가해야 함 

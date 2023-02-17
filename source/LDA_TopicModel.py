@@ -1,5 +1,5 @@
 #%%
-# 01_Import Packages
+# ===== 01_Import Packages =====
 
 ## basic
 import re
@@ -9,7 +9,6 @@ from pprint import pprint
 
 ## nltk
 import nltk
-
 nltk.download('stopwords')
 
 ## Mallet
@@ -40,20 +39,21 @@ import warnings
 warnings.filterwarnings("ignore",category=DeprecationWarning)
 
 # %%
+# ===== 02_Import Dataset =====
 
-## Prepare Stopwords
-# NLTK Stop words
-from nltk.corpus import stopwords
-stop_words = stopwords.words('english')
-stop_words.extend(['from', 'subject', 're', 'edu', 'use'])
-
-# import dataset
 rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/dataset.csv', encoding='cp949')
 documents = pd.DataFrame(rawdata)
 documents.head()
 len(documents)
 
-# %%
+#%%
+# ===== 03_Data Preprocessing A =====
+
+# Prepare Stopwords - NLTK Stop words
+
+from nltk.corpus import stopwords
+stop_words = stopwords.words('english')
+stop_words.extend(['from', 'subject', 're', 'edu', 'use'])
 
 data = documents.keword.values.tolist()
 
@@ -70,6 +70,7 @@ pprint(data[:1])
 
 
 # %%
+# ===== 03_Data Preprocessing B =====
 
 def sent_to_words(sentences):
     for sentence in sentences:
@@ -80,6 +81,8 @@ data_words = list(sent_to_words(data))
 print(data_words[:1])
 
 # %%
+# ===== 03_Data Preprocessing C =====
+
 # Build the bigram and trigram models
 bigram = gensim.models.Phrases(data_words, min_count=5, threshold=100) # higher threshold fewer phrases.
 trigram = gensim.models.Phrases(bigram[data_words], threshold=100)  
@@ -92,6 +95,8 @@ trigram_mod = gensim.models.phrases.Phraser(trigram)
 print(trigram_mod[bigram_mod[data_words[0]]])
 
 #%%
+# ===== 03_Data Preprocessing D =====
+
 # Define functions for stopwords, bigrams, trigrams and lemmatization
 def remove_stopwords(texts):
     return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in texts]
@@ -112,6 +117,7 @@ def lemmatization(texts, allowed_postags=['NOUN', 'ADJ', 'VERB', 'ADV']):
 
 
 # %%
+# ===== 03_Data Preprocessing E =====
 
 # Remove Stop Words
 data_words_nostops = remove_stopwords(data_words)
@@ -129,6 +135,8 @@ data_lemmatized = lemmatization(data_words_bigrams, allowed_postags=['NOUN', 'AD
 print(data_lemmatized[:1])
 
 # %%
+# ===== 04_LDA Topic Modeling A =====
+
 # Create Dictionary
 id2word = corpora.Dictionary(data_lemmatized)
 
@@ -141,11 +149,16 @@ corpus = [id2word.doc2bow(text) for text in texts]
 # View
 print(corpus[:1])
 
+# Human readable format of corpus (term-frequency)
+[[(id2word[id], freq) for id, freq in cp] for cp in corpus[:1]]
+
 #%%
+# ===== 04_LDA Topic Modeling B =====
+
 # Build LDA model
 lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
                                            id2word=id2word,
-                                           num_topics=20, 
+                                           num_topics=10, 
                                            random_state=100,
                                            update_every=1,
                                            chunksize=100,
@@ -159,6 +172,8 @@ pprint(lda_model.print_topics())
 doc_lda = lda_model[corpus]
 
 # %%
+# ===== 04_LDA Topic Modeling C =====
+
 # Compute Perplexity
 print('\nPerplexity: ', lda_model.log_perplexity(corpus))  # a measure of how good the model is. lower the better.
 
@@ -167,56 +182,72 @@ coherence_model_lda = CoherenceModel(model=lda_model, texts=data_lemmatized, dic
 coherence_lda = coherence_model_lda.get_coherence()
 print('\nCoherence Score: ', coherence_lda)
 
+#%%
+# ===== 04_LDA Topic Modeling D =====
+
+# 최적 주제 선정을 위한 코드
+from gensim.models.coherencemodel import CoherenceModel
+from gensim.models import LdaModel
+
+min_topics, max_topics = 2, 20 ## (1) 3, 15 -> 12 /(2) 2, 10 -> 7
+coherence_lda = []
+
+for num_topics in range(min_topics, max_topics):
+    model = LdaModel(corpus, num_topics=num_topics, id2word=id2word)
+    coherence = CoherenceModel(model=model, texts=data_lemmatized, dictionary=id2word)
+    coherence_lda.append(coherence.get_coherence())
+    
+coherence_lda
+
+#%%
+# ===== 04_LDA Topic Modeling E =====
+
+# 코오런스 시각화
+import matplotlib.pyplot as plt
+
+plt.style.use('seaborn-white')
+
+x = [int(i) for i in range(min_topics, max_topics)]
+
+plt.figure(figsize=(10, 6))
+plt.plot(x, coherence_lda)
+plt.xticks(x)
+plt.xlabel('number of topics')
+plt.ylabel('coherence_scores')
+plt.show()
+
+#%%
+# ===== 04_LDA Topic Modeling F =====
+
+# Build LDA model
+lda_model = gensim.models.ldamodel.LdaModel(corpus=corpus,
+                                           id2word=id2word,
+                                           num_topics=9, 
+                                           random_state=100,
+                                           update_every=1,
+                                           chunksize=100,
+                                           passes=10,
+                                           alpha='auto',
+                                           per_word_topics=True)
+
+
+# Print the Keyword in the 10 topics
+pprint(lda_model.print_topics())
+doc_lda = lda_model[corpus]
+
 # %%
+# ===== 05_LDA Topic Modeling Visualization =====
+
+import pyLDAvis.gensim_models
 
 # Visualize the topics
 pyLDAvis.enable_notebook()
 vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, id2word)
+pyLDAvis.display(vis)
+
+pyLDAvis.save_html(vis, '/home/lhshrk/py-TopicModeling/result/test.html')
+
 vis
-
-#%%
-
-# from gensim.models.coherencemodel import CoherenceModel
-
-# min_topics, max_topics = 2, 10 ## (1) 3, 15 -> 12 /(2) 2, 10 -> 7
-# coherence_scores = []
-
-# for num_topics in range(min_topics, max_topics):
-#     model = lda_model(corpus, num_topics=num_topics, id2word=dictionary)
-#     coherence = CoherenceModel(model=model, texts=docs_texts, dictionary=dictionary)
-#     coherence_scores.append(coherence.get_coherence())
-    
-# coherence_scores
-# %%
-def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
-    """
-    Compute c_v coherence for various number of topics
-
-    Parameters:
-    ----------
-    dictionary : Gensim dictionary
-    corpus : Gensim corpus
-    texts : List of input texts
-    limit : Max num of topics
-
-    Returns:
-    -------
-    model_list : List of LDA topic models
-    coherence_values : Coherence values corresponding to the LDA model with respective number of topics
-    """
-    coherence_values = []
-    model_list = []
-    for num_topics in range(start, limit, step):
-        model = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, num_topics=num_topics, id2word=id2word)
-        model_list.append(model)
-        coherencemodel = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence='c_v')
-        coherence_values.append(coherencemodel.get_coherence())
-
-    return model_list, coherence_values
-# %%
-# Can take a long time to run.
-model_list, coherence_values = compute_coherence_values(dictionary=id2word, corpus=corpus, texts=data_lemmatized, start=2, limit=40, step=6)
-# %%
-
 # https://radimrehurek.com/gensim_3.8.3/models/wrappers/ldamallet.html
 # Code: https://www.machinelearningplus.com/nlp/topic-modeling-gensim-python/
+# %%
