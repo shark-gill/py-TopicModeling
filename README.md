@@ -80,4 +80,4 @@ LDA 토픽 모델링 분석은 연구자가 설정한 토픽 모델, 주제 수 
 > 2) DATA ON-AIR/데이터 수집 개요 DOI: https://dataonair.or.kr/
 > 3) Park et al., 2019, The Topic Modeling Analysis of The DMZ Tour IssuesUsing Text Mining
 > 4) Chang et al., 2009, Reading tea leaves: How humans interpret topic models. In Advances in neural information processing systems
-> 5) Newman et al., 2009, 1. Automatic Evaluation of Topic Coherence
+> 5) Newman et al., 2009, Automatic Evaluation of Topic Coherence
