@@ -4,16 +4,16 @@
 
 ## 의존성(Dependency)
 
-> Python 3.8.16
-> pip 23.0
-> setuptools 58.1.0
-> nltk 3.8.1
-> gesim 3.8.3
-> spacy 3.5.0
-> pyLDAvis 3.3.1
-> numpy 1.24.1
-> pandas 1.5.3
-> matplotlib 3.8.3<br/>
+- Python 3.8.16
+- pip 23.0
+- setuptools 58.1.0
+- nltk 3.8.1
+- gesim 3.8.3
+- spacy 3.5.0
+- pyLDAvis 3.3.1
+- numpy 1.24.1
+- pandas 1.5.3
+- matplotlib 3.8.3
 
 <br>
 
