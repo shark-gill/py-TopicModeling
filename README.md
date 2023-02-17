@@ -1,4 +1,4 @@
-# Python based Topic Modeling Pracice
+# Python을 활용한 LDA 토픽 모델링
 
 <br>
 
