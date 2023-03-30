@@ -1,8 +1,8 @@
 #%%
-
+# ===== 01_Import Packages =====
 from wordcloud import WordCloud
 from collections import Counter
-
+import matplotlib.pyplot as plt
 import pandas as pd
 
 df = pd.read_csv('/home/lhshrk/py-TopicModeling/data/key_freq_rawdata.csv', encoding='utf-8')
@@ -15,7 +15,7 @@ tags = counts.most_common(300)
 wc = WordCloud(font_path='/home/lhshrk/py-TopicModeling/data/NanumSquareRoundR.ttf',background_color="white", max_font_size=60)
 cloud = wc.generate_from_frequencies(dict(tags))
 cloud.to_file('/home/lhshrk/py-TopicModeling/data/cloud.png')
-import matplotlib.pyplot as plt
+
 plt.figure(figsize=(10, 8))
 plt.axis('off')
 plt.imshow(cloud)
