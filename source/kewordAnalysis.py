@@ -1,4 +1,6 @@
 #%%
+# ! /home/lhshrk/.pyenv/shims/python3
+# ! Not Virtual Env
 # ===== 01_Import Packages =====
 import numpy as np
 import pandas as pd
@@ -17,15 +19,17 @@ from konlpy.tag import Mecab
 
 #%%
 # ===== 02_Dataset Load=====
-rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/202209-12.csv', encoding='cp949')
-# rawdata.head() / Tabel 확인
+rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/202301-03.csv', encoding='cp949')
+rawdata.head() # Tabel 확인
 # len(rawdata) / 49
 # documents = rawdata['내용'].values.tolist()
 # print(documents)
 
+#%%
+# ===== 03-1_Preprocessing - Regex(Kor) Extraction =====
 def extract_word(text): # 한글만 출력하는 함수
     hangul = re.compile('[^가-힣]') 
-    result = hangul.sub(' ', text) 
+    result = hangul.sub(' ', str(text)) 
     return result
 
 # print("Before Extract", rawdata['내용'][30])
@@ -33,10 +37,10 @@ def extract_word(text): # 한글만 출력하는 함수
 
 rawdata['내용'] = rawdata['내용'].apply(lambda x:extract_word(x))
 
-# rawdata
+rawdata
 
 #%%
-# ===== 03-1_Preprocessing - Spacing =====
+# ===== 03-2_Preprocessing - Spacing =====
 from pykospacing import Spacing
 
 spacing = Spacing()
@@ -44,7 +48,7 @@ print("Before Fixing : ",rawdata['내용'][30])
 print("After Fixing : ", spacing(rawdata['내용'][30]))
 
 #%%
-# ===== 03-2_Preprocessing - Tokenization =====
+# ===== 03-3_Preprocessing - Tokenization =====
 from konlpy.tag import Mecab # pip install python-mecab-ko
 
 tagger = Mecab()
@@ -54,7 +58,7 @@ words = tagger.morphs(words)
 words
 
 #%%
-# ===== 03-3_Preprocessing - Stopwords Remove =====
+# ===== 03-4_Preprocessing - Stopwords Remove =====
 remove_one_word = [x for x in words if len(x)>1 or x=="닉"]
 len(remove_one_word)
 
@@ -71,6 +75,7 @@ from collections import Counter
 frequent = Counter(remove_one_word)
 top_freq = dict(frequent.most_common())
 len(top_freq)
+top_freq
 # result_df = pd.DataFrame.from_dict(top_freq, orient='index')
 # result_df
 
