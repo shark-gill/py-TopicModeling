@@ -19,9 +19,9 @@ from konlpy.tag import Mecab
 
 #%%
 # ===== 02_Dataset Load=====
-rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/202301-03.csv', encoding='cp949')
+rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/202304-06.csv', encoding='cp949')
 rawdata.head() # Tabel 확인
-# len(rawdata) / 49
+len(rawdata) 
 # documents = rawdata['내용'].values.tolist()
 # print(documents)
 

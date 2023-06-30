@@ -19,9 +19,9 @@ from konlpy.tag import Mecab
 
 #%%
 # ===== 02_Dataset Load=====
-rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/202301-03_key_freq.csv', encoding='cp949')
+rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/202304-06_key_freq.csv', encoding='cp949')
 rawdata.head() # Tabel 확인
-# len(rawdata) / 49
+len(rawdata)
 # documents = rawdata['내용'].values.tolist()
 # print(documents)
 
@@ -33,13 +33,13 @@ def extract_word(text): # 한글만 출력하는 함수
     return result
 
 #%%
-# print("Before Extract", rawdata['내용'][30])
-# print("After Extract", extract_word(rawdata['내용'][30]))
+print("Before Extract", rawdata['내용'][30])
+print("After Extract", extract_word(rawdata['내용'][30]))
 
 for i in rawdata.columns[2:12]:
     rawdata[i] = rawdata[i].apply(lambda x:extract_word(x))
 
-rawdata
+# rawdata
 
 #%%
 # ===== 03-2_Preprocessing - Spacing =====
@@ -49,8 +49,8 @@ spacing = Spacing()
 for i in rawdata.columns[2:12]:
     spacing(rawdata[i])
 
-# print("Before Fixing : ",rawdata[2:12][30])
-# print("After Fixing : ", spacing(rawdata[2:12][30]))
+print("Before Fixing : ", rawdata[2:12][:])
+print("After Fixing : ", spacing(rawdata[2:12][:]))
 
 #%%
 # ===== 03-3_Preprocessing - Tokenization =====
@@ -59,7 +59,8 @@ from konlpy.tag import Mecab # pip install python-mecab-ko
 tagger = Mecab()
 
 column_name = rawdata.columns[2:12].to_list()
-# column_name
+column_name
+#%%
 
 word1 = " ".join(rawdata[column_name[0]].tolist())
 word1 = tagger.morphs(word1)
@@ -107,6 +108,8 @@ remove_one_word10 = [x for x in word10 if len(x)>1 or x=="닉"]
 
 
 #%%
+# ★ 이거 실행하면 오류 뜸!!! ★
+# 따라서, 건너뛰기!
 with open('/home/lhshrk/py-TopicModeling/data/stopwords.txt', 'r', encoding='cp949') as f:
     list_file = f.readlines()
 stopwords = list_file[0].split(",")
@@ -147,7 +150,8 @@ top_freq9 = dict(frequent9.most_common())
 frequent10 = Counter(remove_one_word10)
 top_freq10 = dict(frequent10.most_common())
 
-top_freq10
+#%%
+top_freq1
 # len(top_freq)
 # top_freq
 # result_df = pd.DataFrame.from_dict(top_freq, orient='index')
