@@ -19,11 +19,11 @@ from konlpy.tag import Mecab
 
 #%%
 # ===== 02_Dataset Load=====
-rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/202304-06_key_freq.csv', encoding='cp949')
+rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/2023_07-09_key_freq.csv', encoding='cp949')
 rawdata.head() # Tabel 확인
 len(rawdata)
-# documents = rawdata['내용'].values.tolist()
-# print(documents)
+documents = rawdata['내용'].values.tolist()
+print(documents)
 
 #%%
 # ===== 03-1_Preprocessing - Regex(Kor) Extraction =====
@@ -33,13 +33,13 @@ def extract_word(text): # 한글만 출력하는 함수
     return result
 
 #%%
-print("Before Extract", rawdata['내용'][30])
-print("After Extract", extract_word(rawdata['내용'][30]))
+print("Before Extract", rawdata['내용'][31])
+print("After Extract", extract_word(rawdata['내용'][31]))
 
 for i in rawdata.columns[2:12]:
     rawdata[i] = rawdata[i].apply(lambda x:extract_word(x))
 
-# rawdata
+rawdata
 
 #%%
 # ===== 03-2_Preprocessing - Spacing =====
