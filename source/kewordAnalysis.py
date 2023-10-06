@@ -44,8 +44,8 @@ rawdata
 from pykospacing import Spacing
 
 spacing = Spacing()
-print("Before Fixing : ",rawdata['내용'][31])
-print("After Fixing : ", spacing(rawdata['내용'][31]))
+print("Before Fixing : ",rawdata['내용'][21])
+print("After Fixing : ", spacing(rawdata['내용'][21]))
 
 #%%
 # ===== 03-3_Preprocessing - Tokenization =====
