@@ -5,7 +5,7 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv('/home/lhshrk/py-TopicModeling/result/result_whole.csv', encoding='utf-8')
+df = pd.read_csv('/home/lhshrk/py-TopicModeling/result/key_freq_rawdata.csv', encoding='cp949')
 
 words = df.set_index("title").to_dict()["count"]
 

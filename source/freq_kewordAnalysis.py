@@ -33,8 +33,8 @@ def extract_word(text): # 한글만 출력하는 함수
     return result
 
 #%%
-print("Before Extract", rawdata['내용'][31])
-print("After Extract", extract_word(rawdata['내용'][31]))
+print("Before Extract", rawdata['내용'][21])
+print("After Extract", extract_word(rawdata['내용'][21]))
 
 for i in rawdata.columns[2:12]:
     rawdata[i] = rawdata[i].apply(lambda x:extract_word(x))
@@ -60,6 +60,8 @@ tagger = Mecab()
 
 column_name = rawdata.columns[2:12].to_list()
 column_name
+
+
 #%%
 
 word1 = " ".join(rawdata[column_name[0]].tolist())
@@ -108,22 +110,22 @@ remove_one_word10 = [x for x in word10 if len(x)>1 or x=="닉"]
 
 
 #%%
-# ★ 이거 실행하면 오류 뜸!!! ★
-# 따라서, 건너뛰기!
-with open('/home/lhshrk/py-TopicModeling/data/stopwords.txt', 'r', encoding='cp949') as f:
-    list_file = f.readlines()
-stopwords = list_file[0].split(",")
-remove_stopword1 = [x for x in remove_one_word1 if x not in stopwords]
-remove_stopword2 = [x for x in remove_one_word2 if x not in stopwords]
-remove_stopword3 = [x for x in remove_one_word3 if x not in stopwords]
-remove_stopword4 = [x for x in remove_one_word4 if x not in stopwords]
-remove_stopword5 = [x for x in remove_one_word5 if x not in stopwords]
-remove_stopword6 = [x for x in remove_one_word6 if x not in stopwords]
-remove_stopword7 = [x for x in remove_one_word7 if x not in stopwords]
-remove_stopword8 = [x for x in remove_one_word8 if x not in stopwords]
-remove_stopword9 = [x for x in remove_one_word9 if x not in stopwords]
-remove_stopword10 = [x for x in remove_one_word10 if x not in stopwords]
-    # len(remove_stopwords)
+# # ★ 이거 실행하면 오류 뜸!!! ★
+# # 따라서, 건너뛰기!
+# with open('/home/lhshrk/py-TopicModeling/data/stopwords.txt', 'r', encoding='cp949') as f:
+#     list_file = f.readlines()
+# stopwords = list_file[0].split(",")
+# remove_stopword1 = [x for x in remove_one_word1 if x not in stopwords]
+# remove_stopword2 = [x for x in remove_one_word2 if x not in stopwords]
+# remove_stopword3 = [x for x in remove_one_word3 if x not in stopwords]
+# remove_stopword4 = [x for x in remove_one_word4 if x not in stopwords]
+# remove_stopword5 = [x for x in remove_one_word5 if x not in stopwords]
+# remove_stopword6 = [x for x in remove_one_word6 if x not in stopwords]
+# remove_stopword7 = [x for x in remove_one_word7 if x not in stopwords]
+# remove_stopword8 = [x for x in remove_one_word8 if x not in stopwords]
+# remove_stopword9 = [x for x in remove_one_word9 if x not in stopwords]
+# remove_stopword10 = [x for x in remove_one_word10 if x not in stopwords]
+#     # len(remove_stopwords)
 
 #%%
 # ===== 04_Kewords frequency Analysis & list to dict =====
@@ -151,7 +153,7 @@ frequent10 = Counter(remove_one_word10)
 top_freq10 = dict(frequent10.most_common())
 
 #%%
-top_freq1
+top_freq6
 # len(top_freq)
 # top_freq
 # result_df = pd.DataFrame.from_dict(top_freq, orient='index')
