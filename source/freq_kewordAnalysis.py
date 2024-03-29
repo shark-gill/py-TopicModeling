@@ -49,8 +49,8 @@ spacing = Spacing()
 for i in rawdata.columns[2:12]:
     spacing(rawdata[i])
 
-print("Before Fixing : ", rawdata[2:12][:])
-print("After Fixing : ", spacing(rawdata[2:12][:]))
+print("Before Fixing : ", rawdata[0:10][:])
+print("After Fixing : ", spacing(rawdata[0:10][:]))
 
 #%%
 # ===== 03-3_Preprocessing - Tokenization =====

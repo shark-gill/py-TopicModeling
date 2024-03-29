@@ -1,6 +1,8 @@
 #%%
 # ! /home/lhshrk/.pyenv/shims/python3
 # ! Not Virtual Env
+# ! Env = 3.8.16:pyenv
+
 # ===== 01_Import Packages =====
 import numpy as np
 import pandas as pd
@@ -14,8 +16,6 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import warnings
 warnings.filterwarnings("ignore",category=DeprecationWarning)
 
-import konlpy # pip install konlpy
-from konlpy.tag import Mecab
 
 #%%
 # ===== 02_Dataset Load=====
@@ -23,7 +23,7 @@ rawdata = pd.read_csv('/home/lhshrk/py-TopicModeling/data/2023_10-12.csv', encod
 rawdata.head() # Tabel 확인
 len(rawdata) 
 # documents = rawdata['내용'].values.tolist()
-# print(documents)
+print(rawdata)
 
 #%%
 # ===== 03-1_Preprocessing - Regex(Kor) Extraction =====
@@ -42,19 +42,23 @@ rawdata
 #%%
 # ===== 03-2_Preprocessing - Spacing =====
 from pykospacing import Spacing
+# pip install git+https://github.com/haven-jeon/PyKoSpacing.git
 
 spacing = Spacing()
-print("Before Fixing : ",rawdata['내용'][21])
-print("After Fixing : ", spacing(rawdata['내용'][21]))
+print("Before Fixing : ",rawdata['내용'][0:50])
+print("After Fixing : ", spacing(rawdata['내용'][0:50]))
+
+
 
 #%%
 # ===== 03-3_Preprocessing - Tokenization =====
-from konlpy.tag import Mecab # pip install python-mecab-ko
+from konlpy.tag import Mecab
 
-tagger = Mecab()
+m = Mecab()
 
+#%%
 words = " ".join(rawdata['내용'].tolist())
-words = tagger.morphs(words)
+words = m.morphs(words)
 words
 
 #%%
